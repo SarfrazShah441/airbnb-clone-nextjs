@@ -1,6 +1,6 @@
 import NextAuth, { AuthOptions } from 'next-auth';
-import { PrismaAdapter } from '@auth/prisma-adapter';
-import { prisma } from '@/app/libs/prismadb';
+import { PrismaAdapter } from '@next-auth/prisma-adapter';
+import prisma from '@/app/libs/prismadb';
 import GithubProvider from 'next-auth/providers/github'
 import GoogleProvider from 'next-auth/providers/google'
 import CredentialProvider from 'next-auth/providers/credentials'
@@ -16,6 +16,10 @@ export const authOptions: AuthOptions = {
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID as string,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+      httpOptions: {
+        timeout: 6000,
+      }
+      
     }),
     CredentialProvider({
           name: 'credentials',
@@ -38,7 +42,7 @@ export const authOptions: AuthOptions = {
                   throw new Error('Invalid credentials');
               }
 
-              const isCorrectPassword = bcrypt.compare(
+              const isCorrectPassword = await bcrypt.compare(
                   credentials.password,
                   user.hashPassword
               )
