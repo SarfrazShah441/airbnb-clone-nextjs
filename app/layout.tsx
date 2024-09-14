@@ -4,9 +4,12 @@ import { Inter } from 'next/font/google';
 import './globals.css';
 import Navbar from './components/navbar/Navbar';
 import ClientOnly from './components/ClientOnly';
+
+import RentModal from './components/modals/RentModal';
 import RegisterModal from './components/modals/RegisterModal';
-import ToasterProvider from './providers/ToasterProvider';
 import LoginModal from './components/modals/LoginModal';
+
+import ToasterProvider from './providers/ToasterProvider';
 import getCurrentUser from '@/app/actions/getCurrentUser'
 
 const inter = Inter({ subsets: ['latin'] });
@@ -31,6 +34,7 @@ export default async function RootLayout({
       <body className={font.className}>
         <ClientOnly>
           <ToasterProvider />
+          <RentModal />
           <LoginModal />
           <RegisterModal />
           <Navbar currentUser={currentUser} />
